@@ -1,6 +1,8 @@
 import { Module } from '@nestjs/common'
 import { UsersModule } from './users/users.module'
 import { TypeOrmModule } from '@nestjs/typeorm'
+import { FolderModule } from './folder/folder.module';
+import { NoteModule } from './note/note.module';
 
 @Module({
 	imports: [
@@ -14,7 +16,9 @@ import { TypeOrmModule } from '@nestjs/typeorm'
 			database: 'notebook',
 			autoLoadEntities: true,
 			synchronize: true
-		})
+		}),
+		FolderModule,
+		NoteModule
 	],
   controllers: [],
   providers: [],
