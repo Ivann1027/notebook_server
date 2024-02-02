@@ -15,7 +15,7 @@ export class UsersService {
 	}
 
 	async getUserById(id: number): Promise<User> {
-		const user = await this.usersRepository.findOne({where: {id}})
+		const user = await this.usersRepository.findOne({where: {id}, relations: ["folders"]})
 		return user
 	}
 

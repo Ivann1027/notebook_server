@@ -1,8 +1,8 @@
 import { Module } from '@nestjs/common'
 import { UsersModule } from './users/users.module'
 import { TypeOrmModule } from '@nestjs/typeorm'
-import { FolderModule } from './folder/folder.module';
-import { NoteModule } from './note/note.module';
+import { FolderModule } from './folder/folder.module'
+import { NoteModule } from './note/note.module'
 
 @Module({
 	imports: [
