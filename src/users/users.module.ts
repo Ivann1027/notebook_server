@@ -13,6 +13,7 @@ import { UsersFoldersController } from './folders/users-folders.controller';
 @Module({
 	imports: [TypeOrmModule.forFeature([User, Folder, Note])],
   controllers: [UsersController, UsersNotesController, UsersFoldersController],
-  providers: [UsersService, FolderService, NoteService]
+	providers: [UsersService, FolderService, NoteService],
+	exports: [UsersService]
 })
 export class UsersModule {}
