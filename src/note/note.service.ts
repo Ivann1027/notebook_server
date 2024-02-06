@@ -15,12 +15,18 @@ export class NoteService {
 		return notes
 	}
 
-	async getNote(userId: number, noteId: number): Promise<Note> {
+	async getUserNote(userId: number, noteId: number): Promise<Note> {
 		const note = await this.noteRepository
 			.createQueryBuilder('note')
 			.where('note.user.id = :userId', { userId })
 			.andWhere('note.id = :noteId', { noteId })
 			.getOne()
+		if (!note) throw new Error(JSON.stringify({error: "Note not found"}))
 		return note
+	}
+
+	async deleteNote(noteId: number): Promise<void> {
+		const noteToRemove = await this.noteRepository.findOne({ where: { id: noteId } })
+		await this.noteRepository.remove(noteToRemove)
 	}
 }

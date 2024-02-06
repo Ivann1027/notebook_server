@@ -38,7 +38,7 @@ export class UsersService {
 
 	// NOTES
 	async createNote(userId: number, noteDto: CreateNoteDto): Promise<Note> {
-		const user = await this.getUserById(userId)
+		const user = await this.usersRepository.findOne({ where: { id: userId } })
 		if (!user) throw new Error(JSON.stringify({error: "User not found"}))
 		const newNote = this.noteRepository.create({
 			user: user,
@@ -49,16 +49,24 @@ export class UsersService {
 	}
 
 	async updateNote(userId: number, noteId: number, updatedData: Partial<Note>): Promise<Note> {
-		const note = await this.noteService.getNote(userId, noteId)
+		const note = await this.noteService.getUserNote(userId, noteId)
 		if (!note) throw new Error(JSON.stringify({ error: "Note not found" }))
 		if (updatedData.title) note.title = updatedData.title
 		if (updatedData.content) note.content = updatedData.content
 		return this.noteRepository.save(note)
 	}
 
+	async createNoteInFolder(userId: number, folderId: number, noteDto: CreateNoteDto): Promise<Note> {
+		const newNote = await this.createNote(userId, noteDto)
+		const folder = await this.folderRepository.findOne({ where: { id: folderId }, relations: ['notes'] })
+		folder.notes.push(newNote)
+		await this.folderRepository.save(folder)
+		return newNote
+	}
+
 	// FOLDERS
 	async createFolder(userId: number, folderDto: CreateFolderDto): Promise<Folder> {
-		const user = await this.getUserById(userId)
+		const user = await this.usersRepository.findOne({ where: { id: userId } })
 		if (!user) throw new Error(JSON.stringify({ error: "User not found" }))
 		const newFolder = this.folderRepository.create({
 			user: user,
@@ -68,9 +76,16 @@ export class UsersService {
 	}
 
 	async renameFolder(userId: number, folderId: number, updatedData: Partial<Folder>): Promise<Folder> {
-		const folder = await this.folderService.getFolder(userId, folderId)
+		const folder = await this.folderService.getUserFolder(userId, folderId)
 		if (!folder) throw new Error(JSON.stringify({ error: "Folder not found" }))
 		folder.name = updatedData.name
+		return await this.folderRepository.save(folder)
+	}
+
+	async addNoteToFolder(userId: number, folderId: number, noteId: number): Promise<Folder> {
+		const folder = await this.folderService.getUserFolder(userId, folderId)
+		const note = await this.noteService.getUserNote(userId, noteId)
+		folder.notes.push(note)
 		return await this.folderRepository.save(folder)
 	}
 }

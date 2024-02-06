@@ -1,4 +1,12 @@
-import { Controller } from '@nestjs/common'
+import { Controller, Delete, Param } from '@nestjs/common'
+import { NoteService } from './note.service';
 
 @Controller('notes')
-export class NoteController {}
+export class NoteController {
+	constructor(private noteService: NoteService) { }
+	
+	@Delete(':noteId')
+	async deleteNote(@Param('noteId') noteId: number): Promise<void> {
+		return this.noteService.deleteNote(noteId)
+	}
+}

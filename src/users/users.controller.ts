@@ -48,14 +48,13 @@ export class UsersController {
 
 	@Get(':id/notes/:noteId')
 	async getNote(@Param('id') userId: number, @Param('noteId') noteId: number): Promise<Note> {
-		return this.noteService.getNote(userId, noteId)
+		return this.noteService.getUserNote(userId, noteId)
 	}
 
 	@Put(':id/notes/:noteId')
 	async updateNote(@Param('id') userId: number, @Param('noteId') noteId: number, @Body() updatedData: Partial<Note>): Promise<Note> {
 		return this.usersService.updateNote(userId, noteId, updatedData)
 	}
-
 
 	// FOLDERS
 	@Post(':id/folders')
@@ -70,11 +69,36 @@ export class UsersController {
 
 	@Get(':id/folders/:folderId')
 	async getFolder(@Param('id') userId: number, @Param('folderId') folderId: number): Promise<Folder> {
-		return this.foldersService.getFolder(userId, folderId)
+		return this.foldersService.getUserFolder(userId, folderId)
 	}
 
 	@Put(':id/folders/:folderId')
 	async renameFolder(@Param('id') userId: number, @Param('folderId') folderId: number, @Body() updatedData: Partial<Folder>): Promise<Folder> {
 		return this.usersService.renameFolder(userId, folderId, updatedData)
+	}
+
+	@Put(':id/folders/:folderId/notes/:noteId')
+	async addNoteToFolder(@Param('id') userId: number, @Param('folderId') folderId: number, @Param('noteId') noteId: number): Promise<Folder> {
+		return this.usersService.addNoteToFolder(userId, folderId, noteId)
+	}
+
+	@Post(':id/folders/:folderId/notes')
+	async createNoteInFolder(@Param('id') userId: number, @Param('folderId') folderId: number, @Body() noteDto: CreateNoteDto): Promise<Note> {
+		return this.usersService.createNoteInFolder(userId, folderId, noteDto)
+	}
+
+	@Get(':id/folders/:folderId/notes')
+	async getAllFolderNotes(@Param('id') userId: number, @Param('folderId') folderId: number): Promise<Note[]> {
+		return this.foldersService.getAllFolderNotes(userId, folderId)
+	}
+
+	@Get(':id/folders/:folderId/notes/:noteId')
+	async getFolderNote(@Param('id') userId: number, @Param('folderId') folderId: number, @Param('noteId') noteId: number): Promise<Note> {
+		return this.foldersService.getFolderNote(userId, folderId, noteId)
+	}
+
+	@Delete(':id/folders/:folderId/notes/:noteId')
+	async deleteNoteFromFolder(@Param('id') userId: number, @Param('folderId') folderId: number, @Param('noteId') noteId: number): Promise<Folder> {
+		return this.foldersService.deleteNoteFromFolder(userId, folderId, noteId)
 	}
 }
