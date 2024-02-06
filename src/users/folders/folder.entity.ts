@@ -1,4 +1,4 @@
-import { Note } from "src/note/note.entity"
+import { Note } from "src/users/notes/note.entity"
 import { User } from "src/users/user.entity"
 import { Entity, ManyToOne, PrimaryGeneratedColumn, Column, ManyToMany, JoinTable } from "typeorm"
 

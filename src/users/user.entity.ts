@@ -1,5 +1,5 @@
-import { Folder } from "src/folder/folder.entity"
-import { Note } from "src/note/note.entity"
+import { Folder } from "src/users/folders/folder.entity"
+import { Note } from "src/users/notes/note.entity"
 import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from "typeorm"
 
 @Entity('users')

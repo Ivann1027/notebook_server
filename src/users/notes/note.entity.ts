@@ -1,4 +1,4 @@
-import { Folder } from "src/folder/folder.entity"
+import { Folder } from "src/users/folders/folder.entity"
 import { User } from "src/users/user.entity"
 import { Column, PrimaryGeneratedColumn, Entity, ManyToMany, JoinTable, ManyToOne } from "typeorm"
 
