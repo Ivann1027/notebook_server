@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { Module, forwardRef } from '@nestjs/common';
 import { UsersController } from './users.controller';
 import { UsersService } from './users.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
@@ -9,9 +9,10 @@ import { FolderService } from 'src/users/folders/folder.service';
 import { NoteService } from 'src/users/notes/note.service';
 import { UsersNotesController } from './notes/users-notes.controller';
 import { UsersFoldersController } from './folders/users-folders.controller';
+import { AuthModule } from 'src/auth/auth.module';
 
 @Module({
-	imports: [TypeOrmModule.forFeature([User, Folder, Note])],
+	imports: [TypeOrmModule.forFeature([User, Folder, Note]), forwardRef(() => AuthModule)],
   controllers: [UsersController, UsersNotesController, UsersFoldersController],
 	providers: [UsersService, FolderService, NoteService],
 	exports: [UsersService]
