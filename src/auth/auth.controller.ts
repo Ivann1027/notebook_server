@@ -11,12 +11,13 @@ export class AuthController {
 	async login(@Body() userDto: AuthUserDto) {
 		const token = await this.authService.login(userDto)
 		const user = await this.usersServise.getUserByEmail(userDto.email)
-		return {accessToken: token.token, user: {name: user.name, email: user.email, isAuth: true}}
+		return {accessToken: token.token, user: {id: user.id, name: user.name, email: user.email, isAuth: true}}
 	}
 
 	@Post('registration')
 	async registration(@Body() userDto: CreateUserDto) {
 		const token = await this.authService.registration(userDto)
-		return {accessToken: token.token, user: {name: userDto.name, email: userDto.email, isAuth: true}}
+		const user = await this.usersServise.getUserByEmail(userDto.email)
+		return {accessToken: token.token, user: {id: user.id, name: user.name, email: user.email, isAuth: true}}
 	}
 }
