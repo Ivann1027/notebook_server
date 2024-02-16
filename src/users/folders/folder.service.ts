@@ -17,6 +17,7 @@ export class FolderService {
 		const folders = await this.folderRepository
 			.createQueryBuilder('folder')
 			.where('folder.user.id = :userId', { userId })
+			.leftJoinAndSelect('folder.notes', 'note')
 			.getMany()
 		return folders
 	}
